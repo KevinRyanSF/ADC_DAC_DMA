@@ -1,0 +1,26 @@
+import struct
+
+filename = "lut_digipot.bin"
+
+# Abre o arquivo em modo de escrita binária ('wb')
+with open(filename, 'wb') as f:
+    for i in range(256):
+        # A matemática da compensação:
+        # i vai de 0 a 255.
+        # Elevamos a uma potência (ex: 2.5) para criar uma curva exponencial
+        # que compense a queda brusca de resistência do LDR.
+        fator_normalizado = i / 255.0
+        dac_val = int(4095 * (fator_normalizado ** 2.5))
+
+        # Trava de segurança para não ultrapassar os 12 bits do DAC
+        if dac_val > 4095: dac_val = 4095
+        if dac_val < 0: dac_val = 0
+
+        # O formato '<H' empacota o número como um inteiro de 16 bits sem sinal (2 bytes)
+        # no formato Little-Endian (padrão STM32).
+        bytes_to_write = struct.pack('<H', dac_val)
+
+        # Grava os 2 bytes no arquivo
+        f.write(bytes_to_write)
+
+print(f"Arquivo '{filename}' gerado com sucesso! Tamanho exato: {256 * 2} bytes.")
