@@ -163,3 +163,7 @@ Os testes foram realizados utilizando 10 valores discretos no intervalo `res [0,
 As medições foram feitas manualmente com multímetro nas escalas de 200 kΩ e 2000 kΩ para validação da resposta resistiva do sistema.
 
 Os dados coletados foram utilizados para cálculo do erro RMS (Root Mean Square Error), conforme especificado pelos requisitos acadêmicos do laboratório.
+
+---
+
+[![Assistir Vídeo do Projeto](https://img.shields.io/badge/YouTube-Assistir%20Vídeo-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=OIEYp3sDpnQ)
