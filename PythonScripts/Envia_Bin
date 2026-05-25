@@ -1,0 +1,32 @@
+import serial
+import time
+
+# IMPORTANTE: Altere 'COM3' para a porta COM em que o seu ESP32 está conectado
+PORTA_COM = 'COM4'
+BAUD_RATE = 115200
+ARQUIVO = "lut_digipot.bin"
+
+try:
+    # Lê os 512 bytes do arquivo binário
+    with open(ARQUIVO, 'rb') as f:
+        dados_binarios = f.read()
+
+    print(f"Tamanho do arquivo lido: {len(dados_binarios)} bytes.")
+
+    if len(dados_binarios) != 512:
+        print("ALERTA: O arquivo não tem 512 bytes. O DMA da STM32 pode travar aguardando o resto.")
+
+    # Abre a porta serial e envia
+    print(f"Conectando na {PORTA_COM}...")
+    with serial.Serial(PORTA_COM, BAUD_RATE, timeout=2) as ser:
+        print("Enviando dados...")
+        ser.write(dados_binarios)
+        time.sleep(1)  # Aguarda o buffer esvaziar
+
+    print("Envio concluído com sucesso!")
+
+except FileNotFoundError:
+    print(f"Erro: O arquivo {ARQUIVO} não foi encontrado.")
+except serial.SerialException as e:
+    print(f"Erro na porta serial: {e}")
+    print("Dica: Feche a Arduino IDE ou qualquer outro monitor serial que esteja usando a porta.")
